@@ -23,14 +23,15 @@ class MyApp extends StatelessWidget {
             }
             if (state == RadioToggleFavSuccessState()) {
               await cubit.getCategories();
+              await cubit.getFavs();
             }
           }),
-          builder: (context, state) =>  MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            theme: appTheme,
-            home: const RadioHome(),
-          )),
+          builder: (context, state) => MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Flutter Demo',
+                theme: appTheme,
+                home: const RadioHome(),
+              )),
     );
   }
 }

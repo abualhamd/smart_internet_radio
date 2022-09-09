@@ -32,7 +32,6 @@ class RadioHome extends StatelessWidget {
                 child: Scaffold(
                   drawer: const AppDrawer(),
                   appBar: AppBar(
-                    // leading: AppIcons.appBarMenuIcon,
                     title: const Text(AppStrings.appTitle),
                     actions: [
                       IconButton(
@@ -40,7 +39,7 @@ class RadioHome extends StatelessWidget {
                         icon: AppIcons.appBarSearchIcon,
                       )
                     ],
-                    bottom: TabBar(enableFeedback: false, tabs: [
+                    bottom: const TabBar(enableFeedback: false, tabs: [
                       AppIcons.tabBarHomeIcon,
                       AppIcons.tabBarFavIcon,
                     ]),
@@ -55,13 +54,5 @@ class RadioHome extends StatelessWidget {
             });
       },
     );
-
-    // ConditionalBuilder(
-    //     condition: context.watch<RadioCubit>().playbarChannel != null,
-    //     fallback: (context) => const Center(
-    //           child: CircularProgressIndicator(),
-    //         ),
-    //     builder: (context) {
-    //       return });
   }
 }

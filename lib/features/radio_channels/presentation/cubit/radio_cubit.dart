@@ -83,7 +83,7 @@ class RadioCubit extends Cubit<RadioState> {
     var response = await _getAudioUsecase(playbarChannel!.soundUrl);
     response.fold((failure) {
       emit(RadioAudioErrorState());
-    }, (r) {
+    }, (success) {
       emit(RadioAudioSuccessState());
     });
   }

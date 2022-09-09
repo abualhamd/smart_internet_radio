@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
-
 import '../../domain/entities/channel.dart';
 
 class ChannelWidget extends StatelessWidget {

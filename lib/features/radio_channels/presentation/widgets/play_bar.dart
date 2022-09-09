@@ -13,9 +13,8 @@ class PlayBar extends StatelessWidget {
     return BlocBuilder<RadioCubit, RadioState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: () async{
+          onTap: () async {
             await cubit.pressPlaybar();
-          //  cubit.eraseDatabase();
           },
           child: Container(
             color: AppColors.primary,
@@ -29,7 +28,10 @@ class PlayBar extends StatelessWidget {
                 cubit.playbarChannel!.type,
                 style: TextStyle(color: Colors.white),
               ),
-              trailing: cubit.playPauseIcon,
+              trailing: IconButton(
+                icon: cubit.playPauseIcon,
+                onPressed: (() {}),
+              ),
             ),
           ),
         );

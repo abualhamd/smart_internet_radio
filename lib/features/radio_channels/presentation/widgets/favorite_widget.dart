@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_internet_radio/core/utils/assets_manager.dart';
 import 'package:smart_internet_radio/core/utils/extensions/media_query_values.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
-
 import '../../domain/entities/channel.dart';
 
 class FavWidget extends StatelessWidget {
@@ -25,6 +23,7 @@ class FavWidget extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: width / 50),
         child: Card(
           shape:
+          // TODO
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           elevation: 5,
           child: ListTile(

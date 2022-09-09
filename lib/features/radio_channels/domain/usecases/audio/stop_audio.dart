@@ -9,7 +9,7 @@ class StopAudioUsecase implements UseCase<void, NoParams> {
       : _channelRepo = channelRepo;
 
   @override
-  Future<Either<Failure, dynamic>> call(NoParams params) {
-    return _channelRepo.stopAudio();
+  Future<Either<Failure, dynamic>> call(NoParams params) async{
+    return await _channelRepo.stopAudio();
   }
 }

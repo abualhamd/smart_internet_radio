@@ -14,6 +14,8 @@ abstract class ChannelsLocalDataSource {
 class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
   Database? _database;
 
+  static const String tableName = 'channels';
+
   @override
   Future<void> storeChannels() async {
     _database = await openDatabase(
@@ -21,12 +23,12 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
       version: 1,
       onCreate: (db, version) async {
         await db.execute(
-            'CREATE TABLE channels (id INTEGER PRIMARY KEY, name Text, type TEXT, img Text, soundUrl Text, fav Text)');
+            'CREATE TABLE $tableName (id INTEGER PRIMARY KEY, name Text, type TEXT, img Text, soundUrl Text, fav Text)');
 
         for (var channel in jsonChannels) {
           await db.transaction((txn) async {
             await txn.rawInsert(
-                'INSERT INTO channels(name, type, img, soundUrl, fav) VALUES("${channel['name']}", "${channel['type']}", "${channel['img']}", "${channel['soundUrl']}","${channel['fav']}")');
+                'INSERT INTO $tableName(name, type, img, soundUrl, fav) VALUES("${channel['name']}", "${channel['type']}", "${channel['img']}", "${channel['soundUrl']}","${channel['fav']}")');
           });
         }
       },
@@ -37,17 +39,17 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
   @override
   Future<List<ChannelModel>> getChannels() async {
     List<Map<String, dynamic>> channels =
-        await _database!.rawQuery('SELECT * FROM channels');
+        await _database!.rawQuery('SELECT * FROM $tableName');
 
-    return Future.value(channels
+    return channels
         .map((channel) => ChannelModel.fromJson(json: channel))
-        .toList());
+        .toList();
   }
 
   @override
   Future<List<ChannelModel>> getFavorites() async {
     var response = await _database!
-        .rawQuery('SELECT * FROM channels WHERE fav = ?', [true.toString()]);
+        .rawQuery('SELECT * FROM $tableName WHERE fav = ?', [true.toString()]);
 
     List<ChannelModel> favs = [];
     for (var fav in response) {
@@ -57,15 +59,20 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
     return favs;
   }
 
-  var ctgryNames = [AppStrings.categQuran, AppStrings.categNews, AppStrings.categMusic, AppStrings.categSports];
+  var ctgryNames = [
+    AppStrings.categQuran,
+    AppStrings.categNews,
+    AppStrings.categMusic,
+    AppStrings.categSports
+  ];
 
   @override
   Future<Map<String, List<ChannelModel>>> getCategories() async {
     Map<String, List<ChannelModel>> categories = {};
 
     for (var category in ctgryNames) {
-      List<Map<String, dynamic>> response = await _database!
-          .rawQuery('SELECT * FROM channels where type = ?', [category.toLowerCase()]);
+      List<Map<String, dynamic>> response = await _database!.rawQuery(
+          'SELECT * FROM $tableName where type = ?', [category.toLowerCase()]);
 
       List<ChannelModel> categoryChannels = [];
 
@@ -81,7 +88,7 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
   @override
   Future<void> toggleFav({required int id, required String cond}) async {
     await _database!
-        .rawUpdate('UPDATE channels SET fav = ? WHERE id = ?', [cond, id]);
+        .rawUpdate('UPDATE $tableName SET fav = ? WHERE id = ?', [cond, id]);
   }
 }
 

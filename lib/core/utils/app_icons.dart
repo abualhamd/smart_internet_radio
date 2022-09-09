@@ -20,4 +20,6 @@ abstract class AppIcons {
   static const Icon ctgNews = Icon(Icons.newspaper_outlined);
   static const Icon ctgMusic = Icon(Icons.music_note_outlined);
   static const Icon ctgSports = Icon(Icons.sports_soccer_outlined);
+
+  static const Icon arrowBack = Icon(Icons.arrow_back_ios);
 }

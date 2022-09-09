@@ -1,8 +1,8 @@
 import 'package:just_audio/just_audio.dart';
 
 abstract class AppAudioPlayer {
-  void getAudio({required String url});
-  void stopAudio();
+  Future<void> getAudio({required String url});
+  Future<void> stopAudio();
 }
 
 class AppAudioPlayerImpl implements AppAudioPlayer {
@@ -11,14 +11,14 @@ class AppAudioPlayerImpl implements AppAudioPlayer {
   final AudioPlayer _audioPlayer;
 
   @override
-  void getAudio({required String url}) async {
+  Future<void> getAudio({required String url}) async {
     await _audioPlayer.stop();
     await _audioPlayer.setUrl(url);
     await _audioPlayer.play();
   }
 
   @override
-  void stopAudio() async {
+  Future<void> stopAudio() async {
     await _audioPlayer.stop();
   }
 }

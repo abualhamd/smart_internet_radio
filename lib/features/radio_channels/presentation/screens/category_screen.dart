@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/entities/channel.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/screens/home.dart';
@@ -23,7 +24,7 @@ class CategoryScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
+              icon: AppIcons.arrowBack,
               onPressed: () {
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (context) => const RadioHome()));

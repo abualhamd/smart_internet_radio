@@ -51,7 +51,7 @@ class ChannelRepoImpl implements ChannelRepo {
   @override
   Future<Either<Failure, NoParams>> getAudio({required String url}) async {
     try {
-      _audioPlayer.getAudio(url: url);
+      await _audioPlayer.getAudio(url: url);
       return (Right(NoParams()));
     } on AudioPlayerException {
       return Left(AudioPlayerFailure());
@@ -61,7 +61,7 @@ class ChannelRepoImpl implements ChannelRepo {
   @override
   Future<Either<Failure, NoParams>> stopAudio() async {
     try {
-      _audioPlayer.stopAudio();
+      await _audioPlayer.stopAudio();
 
       return Right(NoParams());
     } on AudioPlayerException {

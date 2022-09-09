@@ -9,7 +9,7 @@ class GetAudioUsecase implements UseCase<NoParams, String> {
       : _channelRepo = channelRepo;
 
   @override
-  Future<Either<Failure, NoParams>> call(String url) {
-    return _channelRepo.getAudio(url: url);
+  Future<Either<Failure, NoParams>> call(String url) async{
+    return await _channelRepo.getAudio(url: url);
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smart_internet_radio/core/utils/extensions/media_query_values.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
 import '../../../../core/utils/colors/app_colors.dart';
 
 class PlayBar extends StatelessWidget {
@@ -8,28 +8,32 @@ class PlayBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = context.width;
-    return GestureDetector(
-      onTap: (){
+    RadioCubit cubit = RadioCubit.get(context);
 
+    return BlocBuilder<RadioCubit, RadioState>(
+      builder: (context, state) {
+        return GestureDetector(
+          onTap: () async{
+            await cubit.pressPlaybar();
+          //  cubit.eraseDatabase();
+          },
+          child: Container(
+            color: AppColors.primary,
+            child: ListTile(
+              leading: Image.asset(cubit.playbarChannel!.img),
+              title: Text(
+                cubit.playbarChannel!.name,
+                style: TextStyle(color: Colors.white),
+              ),
+              subtitle: Text(
+                cubit.playbarChannel!.type,
+                style: TextStyle(color: Colors.white),
+              ),
+              trailing: cubit.playPauseIcon,
+            ),
+          ),
+        );
       },
-      child: Container(
-        color: AppColors.primary,
-        // height: width / 4,
-        // padding: EdgeInsets.symmetric(horizontal: width/25),
-        child:  ListTile(
-          leading: Image.asset('assets/images/temp.jpg'),
-          title: Text(
-            'BBC Arabic',
-            style: TextStyle(color: Colors.white),
-          ),
-          subtitle: Text(
-            'News',
-            style: TextStyle(color: Colors.white),
-          ),
-          trailing: Icon(Icons.play_circle_outline, color: Colors.white,),
-        ),
-      ),
     );
   }
 }

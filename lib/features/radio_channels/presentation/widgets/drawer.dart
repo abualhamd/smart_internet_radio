@@ -12,11 +12,11 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
+            decoration: BoxDecoration(color: AppColors.primary),
             child: Text(
               'Categories',
               style: TextStyle(color: Colors.white),
             ),
-            decoration: BoxDecoration(color: AppColors.primary),
           ),
           ListTile(
             leading: Icon(Icons.book_online_outlined),

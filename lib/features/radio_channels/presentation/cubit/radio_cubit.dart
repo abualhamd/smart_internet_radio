@@ -8,11 +8,11 @@ import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/entities/channel.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/get_audio.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/stop_audio.dart';
+import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_categories.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_channels.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_favs.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/store_channels.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/toggle_fav.dart';
-import 'package:sqflite/sqflite.dart';
 import '../../../../core/errors/failures.dart';
 part 'radio_states.dart';
 
@@ -24,12 +24,14 @@ class RadioCubit extends Cubit<RadioState> {
     required StopAudioUsecase stopAudioUsecase,
     required ToggleFavUsecase toggleFavUsecase,
     required GetFavsUsecase getFavsUsecase,
+    required GetCategoryUsecase getCategoryUsecase,
   })  : _storeChannelsUsecase = storeChannelsUsecase,
         _getChannelsUsecase = getChannelsUsecase,
         _getAudioUsecase = getAudioUsecase,
         _stopAudioUsecase = stopAudioUsecase,
         _toggleFavUsecase = toggleFavUsecase,
         _getFavsUsecase = getFavsUsecase,
+        _getCategoryUsecase = getCategoryUsecase,
         super(RadioInitState());
 
   final GetChannelsUsecase _getChannelsUsecase;
@@ -38,9 +40,11 @@ class RadioCubit extends Cubit<RadioState> {
   final StopAudioUsecase _stopAudioUsecase;
   final ToggleFavUsecase _toggleFavUsecase;
   final GetFavsUsecase _getFavsUsecase;
+  final GetCategoryUsecase _getCategoryUsecase;
 
   List<Channel> channels = [];
   List<Channel> favs = [];
+  Map<String, List<Channel>> channelsCategories = {};
   Channel? playbarChannel;
   Icon playPauseIcon = AppIcons.playIcon;
 
@@ -65,6 +69,7 @@ class RadioCubit extends Cubit<RadioState> {
         (radioChannels) {
       channels = radioChannels;
       playbarChannel = channels[0];
+      
       emit(RadioGetChannelsSuccessState());
     });
   }
@@ -83,19 +88,6 @@ class RadioCubit extends Cubit<RadioState> {
     });
   }
 
-  // Future<void> pressChannel({required Channel channel}) async {
-  //   if (channel != playbarChannel) {
-  //     playbarChannel = channel;
-  //     await playChannel();
-  //   } else if (playPauseIcon == AppIcons.pauseIcon) {
-  //     playPauseIcon == AppIcons.playIcon;
-  //     await _stopAudioUsecase(NoParams());
-  //   } else {
-  //     await playChannel();
-  //   }
-  //   emit(RadioChannelPressedState());
-  // }
-
   Future<void> pressPlaybar() async {
     emit(RadioPlayBarPressedState());
 
@@ -113,18 +105,20 @@ class RadioCubit extends Cubit<RadioState> {
     }
   }
 
-  void eraseDatabase() async {
-    try {
-      String databasesPath = await getDatabasesPath();
-      String path = '$databasesPath/radio.db';
-      deleteDatabase(path);
-      print('deleted');
-    } catch (error) {
-      print(error);
-    }
-  }
+  // void eraseDatabase() async {
+  //   try {
+  //     String databasesPath = await getDatabasesPath();
+  //     String path = '$databasesPath/radio.db';
+  //     deleteDatabase(path);
+  //     print('deleted');
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
   Future<void> toggleFav({required int id, required bool cond}) async {
+    emit(RadioToggleFavPressedState());
+
     var response =
         await _toggleFavUsecase(FavParams(id: id, cond: (!cond).toString()));
 
@@ -139,10 +133,22 @@ class RadioCubit extends Cubit<RadioState> {
 
     emit(
       response.fold((failure) => RadioGetFavErrorState(), (favChannels) {
-        print(favChannels);
         favs = favChannels;
         return RadioGetFavSuccessState();
       }),
     );
+  }
+
+  Future<void> getCategories() async {
+    emit(RadioGetCategoriesLoadingState());
+
+    var response = await _getCategoryUsecase(NoParams());
+    response.fold((failue) {
+      emit(RadioGetCategoriesErrorState());
+    }, (categories) {
+      channelsCategories = categories;
+
+      emit(RadioGetCategoriesSuccessState());
+    });
   }
 }

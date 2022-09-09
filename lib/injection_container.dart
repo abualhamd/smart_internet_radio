@@ -6,6 +6,7 @@ import 'package:smart_internet_radio/features/radio_channels/data/repositories/c
 import 'package:smart_internet_radio/features/radio_channels/domain/repositories/channel_repo.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/get_audio.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/stop_audio.dart';
+import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_categories.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_channels.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_favs.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/store_channels.dart';
@@ -24,6 +25,7 @@ Future<void> init() async {
       stopAudioUsecase: sl(),
       toggleFavUsecase: sl(),
       getFavsUsecase: sl(),
+      getCategoryUsecase: sl(),
     ),
   );
 
@@ -45,6 +47,9 @@ Future<void> init() async {
 
   sl.registerLazySingleton<GetFavsUsecase>(
       () => GetFavsUsecase(channelRepo: sl()));
+
+  sl.registerLazySingleton<GetCategoryUsecase>(
+      () => GetCategoryUsecase(channelRepo: sl()));
 
   ///repo
   sl.registerLazySingleton<ChannelRepo>(

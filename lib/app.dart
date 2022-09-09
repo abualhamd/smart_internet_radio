@@ -13,24 +13,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => di.sl<RadioCubit>()..openDatabase(),
-      child: BlocListener<RadioCubit, RadioState>(
-        listener: ((context, state)  async{
-          if (state == RadioStoreChannelsSuccessState()) {
-            await context.read<RadioCubit>().getChannels();
-            await context.read<RadioCubit>().getFavs();
-          }
-        }),
-        // buildWhen: (previous, current) {
-        //   return current == RadioGetChannelsSuccessState();
-        // },
-        child: MaterialApp(
+      child: BlocConsumer<RadioCubit, RadioState>(
+          listener: ((context, state) async {
+            RadioCubit cubit = RadioCubit.get(context);
+            if (state == RadioStoreChannelsSuccessState()) {
+              await cubit.getChannels();
+              await cubit.getFavs();
+              await cubit.getCategories();
+            }
+            if (state == RadioToggleFavSuccessState()) {
+              await cubit.getCategories();
+            }
+          }),
+          builder: (context, state) =>  MaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: appTheme,
             home: const RadioHome(),
-          )
-        
-      ),
+          )),
     );
   }
 }

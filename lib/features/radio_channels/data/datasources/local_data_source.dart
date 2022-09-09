@@ -1,3 +1,4 @@
+import 'package:smart_internet_radio/core/utils/app_strings.dart';
 import 'package:smart_internet_radio/core/utils/assets_manager.dart';
 import 'package:smart_internet_radio/features/radio_channels/data/models/channel_model.dart';
 import 'package:sqflite/sqflite.dart';
@@ -6,7 +7,7 @@ abstract class ChannelsLocalDataSource {
   Future<void> storeChannels();
   Future<List<ChannelModel>> getChannels();
   Future<List<ChannelModel>> getFavorites();
-
+  Future<Map<String, List<ChannelModel>>> getCategories();
   Future<void> toggleFav({required int id, required String cond});
 }
 
@@ -19,7 +20,6 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
       'radio.db',
       version: 1,
       onCreate: (db, version) async {
-        print('entered create');
         await db.execute(
             'CREATE TABLE channels (id INTEGER PRIMARY KEY, name Text, type TEXT, img Text, soundUrl Text, fav Text)');
 
@@ -29,13 +29,8 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
                 'INSERT INTO channels(name, type, img, soundUrl, fav) VALUES("${channel['name']}", "${channel['type']}", "${channel['img']}", "${channel['soundUrl']}","${channel['fav']}")');
           });
         }
-        print('create done');
       },
-      onOpen: (db) async {
-        print('on open');
-        var temp = await db.rawQuery("SELECT * FROM channels");
-        print(temp.toString());
-      },
+      onOpen: (db) {},
     );
   }
 
@@ -50,12 +45,6 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
   }
 
   @override
-  Future<void> toggleFav({required int id, required String cond}) async {
-    await _database!
-        .rawUpdate('UPDATE channels SET fav = ? WHERE id = ?', [cond, id]);
-  }
-
-  @override
   Future<List<ChannelModel>> getFavorites() async {
     var response = await _database!
         .rawQuery('SELECT * FROM channels WHERE fav = ?', [true.toString()]);
@@ -66,6 +55,33 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
     }
 
     return favs;
+  }
+
+  var ctgryNames = [AppStrings.categQuran, AppStrings.categNews, AppStrings.categMusic, AppStrings.categSports];
+
+  @override
+  Future<Map<String, List<ChannelModel>>> getCategories() async {
+    Map<String, List<ChannelModel>> categories = {};
+
+    for (var category in ctgryNames) {
+      List<Map<String, dynamic>> response = await _database!
+          .rawQuery('SELECT * FROM channels where type = ?', [category.toLowerCase()]);
+
+      List<ChannelModel> categoryChannels = [];
+
+      for (var channel in response) {
+        categoryChannels.add(ChannelModel.fromJson(json: channel));
+      }
+      categories[category] = categoryChannels;
+    }
+
+    return categories;
+  }
+
+  @override
+  Future<void> toggleFav({required int id, required String cond}) async {
+    await _database!
+        .rawUpdate('UPDATE channels SET fav = ? WHERE id = ?', [cond, id]);
   }
 }
 

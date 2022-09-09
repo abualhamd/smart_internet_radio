@@ -15,4 +15,9 @@ abstract class AppIcons {
   );
   static const Icon favhollowed = Icon(Icons.favorite_border_outlined);
   static const Icon favfilled = Icon(Icons.favorite_outlined);
+
+  static const Icon ctgQuran = Icon(Icons.book_online_outlined);
+  static const Icon ctgNews = Icon(Icons.newspaper_outlined);
+  static const Icon ctgMusic = Icon(Icons.music_note_outlined);
+  static const Icon ctgSports = Icon(Icons.sports_soccer_outlined);
 }

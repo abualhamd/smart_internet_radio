@@ -25,9 +25,13 @@ class RadioPlayBarPressedState extends RadioState {}
 
 class RadioChannelPressedState extends RadioState {}
 
+class RadioToggleFavPressedState extends RadioState {}
 class RadioToggleFavSuccessState extends RadioState {}
 class RadioToggleFavErrorState extends RadioState {}
 
 class RadioGetFavSuccessState extends RadioState {}
 class RadioGetFavErrorState extends RadioState {}
 
+class RadioGetCategoriesLoadingState extends RadioState {}
+class RadioGetCategoriesSuccessState extends RadioState {}
+class RadioGetCategoriesErrorState extends RadioState {}

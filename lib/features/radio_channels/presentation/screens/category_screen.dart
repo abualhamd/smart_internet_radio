@@ -34,12 +34,11 @@ class CategoryScreen extends StatelessWidget {
           ),
           body: ListView.builder(
             itemBuilder: (context, index) {
-              // print();
               return ChannelWidget(channel: channels[index]);
             },
             itemCount: channels.length,
           ),
-          bottomNavigationBar: const PlayBar(),
+          bottomNavigationBar: PlayBar(),
         );
       },
     );

@@ -44,7 +44,7 @@ class RadioHome extends StatelessWidget {
                       AppIcons.tabBarFavIcon,
                     ]),
                   ),
-                  body: TabBarView(children: [
+                  body: const TabBarView(children: [
                     HomeTabBuilder(),
                     FavoritesTabBuilder(),
                   ]),

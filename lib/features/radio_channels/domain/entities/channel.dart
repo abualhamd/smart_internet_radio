@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 class Channel extends Equatable {
   @override
-  List<Object?> get props => [name, type, img, soundUrl, fav];
+  List<Object?> get props => [id];//, name, type, img, soundUrl, fav
 
   final int id;
   final String name;

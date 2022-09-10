@@ -4,7 +4,11 @@ import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/
 import '../../../../core/utils/colors/app_colors.dart';
 
 class PlayBar extends StatelessWidget {
-  const PlayBar({Key? key}) : super(key: key);
+   const PlayBar._internal({Key? key}) : super(key: key);
+
+   static const instance = PlayBar._internal();
+
+   factory PlayBar() => instance;
 
   @override
   Widget build(BuildContext context) {

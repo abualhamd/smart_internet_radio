@@ -35,3 +35,7 @@ class RadioGetFavErrorState extends RadioState {}
 class RadioGetCategoriesLoadingState extends RadioState {}
 class RadioGetCategoriesSuccessState extends RadioState {}
 class RadioGetCategoriesErrorState extends RadioState {}
+
+
+class RadioAlanPressedState extends RadioState {}
+class RadioAlanExecutedState extends RadioState {}

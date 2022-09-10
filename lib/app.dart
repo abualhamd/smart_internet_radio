@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => di.sl<RadioCubit>()..openDatabase(),
+      create: (context) => di.sl<RadioCubit>()..openDatabase()..setupAlan(),
       child: BlocConsumer<RadioCubit, RadioState>(
           listener: ((context, state) async {
             RadioCubit cubit = RadioCubit.get(context);

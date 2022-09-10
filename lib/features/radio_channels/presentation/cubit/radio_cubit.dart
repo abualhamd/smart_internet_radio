@@ -1,3 +1,4 @@
+import 'package:alan_voice/alan_voice.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ import 'package:smart_internet_radio/features/radio_channels/domain/usecases/cha
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_favs.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/store_channels.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/toggle_fav.dart';
+import 'package:sqflite/sqflite.dart';
 import '../../../../core/errors/failures.dart';
 part 'radio_states.dart';
 
@@ -69,7 +71,7 @@ class RadioCubit extends Cubit<RadioState> {
         (radioChannels) {
       channels = radioChannels;
       playbarChannel = channels[0];
-      
+
       emit(RadioGetChannelsSuccessState());
     });
   }
@@ -105,16 +107,16 @@ class RadioCubit extends Cubit<RadioState> {
     }
   }
 
-  // void eraseDatabase() async {
-  //   try {
-  //     String databasesPath = await getDatabasesPath();
-  //     String path = '$databasesPath/radio.db';
-  //     deleteDatabase(path);
-  //     print('deleted');
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
+  Future<void> eraseDatabase() async {
+    try {
+      String databasesPath = await getDatabasesPath();
+      String path = '$databasesPath/radio.db';
+      deleteDatabase(path);
+      print('deleted');
+    } catch (error) {
+      print(error);
+    }
+  }
 
   Future<void> toggleFav({required int id, required bool cond}) async {
     emit(RadioToggleFavPressedState());
@@ -150,5 +152,69 @@ class RadioCubit extends Cubit<RadioState> {
 
       emit(RadioGetCategoriesSuccessState());
     });
+  }
+
+  void setupAlan() {
+    AlanVoice.addButton(
+        "5a1f2b34d4b1d69620e6b6972cca03b42e956eca572e1d8b807a3e2338fdd0dc/stage",
+        buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
+
+    void _handleCommand(Map<String, dynamic> response) async {
+      emit(RadioAlanPressedState());
+      debugPrint("command was ${response.toString()}");
+      switch (response["command"].toString().toLowerCase()) {
+        case 'play':
+          await playChannel(channel: playbarChannel!);
+          break;
+        case 'pause':
+          await _stopAudioUsecase(NoParams());
+          playPauseIcon = AppIcons.playIcon;
+          break;
+        case 'play_channel':
+          // pause();
+          // DataProvider.index = response['id'] - 1;
+          // currentChannel(DataProvider.index);
+          int index = response['id'] - 1;
+          await playChannel(channel: channels[index]);
+          break;
+        case 'favorite':
+          break;
+        // case 'favorite_channel':
+        //   DataProvider.index = response['id'] - 1;
+        //   toggleFavIcon(favouriteModel:   FavouriteModel(
+        //     id:  allItems[DataProvider.index].id,
+        //     name:  allItems[DataProvider.index].name,
+        //     type:  allItems[DataProvider.index].type,
+        //     imageUrl:  allItems[DataProvider.index].imageUrl,
+        //     soundUrl:  allItems[DataProvider.index].soundUrl,
+        //     isFav:  allItems[response['id'] - 1].isFav! == "true" ? "false" : "true",
+        //   ));
+        //   break;
+        // case 'next':
+        //   DataProvider.index++;
+        //   if(DataProvider.index == 15) {
+        //     DataProvider.index = 0;
+        //   }
+        //   pause();
+        //   currentChannel(DataProvider.index);
+        //   break;
+        // case 'previous':
+        //   DataProvider.index--;
+        //   if(DataProvider.index == -1)
+        //     DataProvider.index = 14;
+        //   pause();
+        //   currentChannel(DataProvider.index);
+        //   break;
+        // case 'category':
+        //   pause();
+        //   DataProvider.index = response['id'] - 1;
+        //   currentChannel(DataProvider.index);
+        //   break;
+      }
+      emit(RadioAlanExecutedState());
+      // notifyListeners();
+    }
+
+    AlanVoice.onCommand.add((command) => _handleCommand(command.data));
   }
 }

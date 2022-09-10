@@ -94,7 +94,7 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
 
 final jsonChannels = [
   {
-    'id': 0,
+    'id': 1,
     'name': 'Tarateel',
     'type': 'quran',
     'img': ImgsManager.tarateel,
@@ -102,7 +102,7 @@ final jsonChannels = [
     'fav': false.toString(),
   },
   {
-    'id': 1,
+    'id': 2,
     'name': '9090 FM',
     'type': 'sports',
     'img': ImgsManager.fm9090,
@@ -110,7 +110,7 @@ final jsonChannels = [
     'fav': false.toString(),
   },
   {
-    'id': 2,
+    'id': 3,
     'name': 'Quran',
     'type': 'quran',
     'img': ImgsManager.quraan,
@@ -118,7 +118,7 @@ final jsonChannels = [
     'fav': false.toString(),
   },
   {
-    'id': 3,
+    'id': 4,
     'name': '90s FM',
     'type': 'news',
     'img': ImgsManager.fm90,
@@ -126,7 +126,7 @@ final jsonChannels = [
     'fav': false.toString(),
   },
   {
-    'id': 4,
+    'id': 5,
     'name': 'Mahatet masr',
     'type': 'news',
     'img': ImgsManager.mahtatMasr,
@@ -134,7 +134,7 @@ final jsonChannels = [
     'fav': false.toString(),
   },
   {
-    'id': 5,
+    'id': 6,
     'name': 'Nagham FM',
     'type': 'music',
     'img': ImgsManager.naghamFM,
@@ -142,20 +142,11 @@ final jsonChannels = [
     'fav': false.toString(),
   },
   {
-    'id': 6,
+    'id': 7,
     'name': 'Banha',
     'type': 'music',
     'img': ImgsManager.banha,
     'soundUrl': 'https://whsh4u-panel.com/proxy/wzwpdthd?mp=/stream',
-    'fav': false,
-  },
-  // TODO remove this one
-  {
-    'id': 7,
-    'name': 'EGONAIR',
-    'type': 'music',
-    'img': ImgsManager.egonair,
-    'soundUrl': 'http://www.egonair.com:8010/;',
     'fav': false,
   },
   {

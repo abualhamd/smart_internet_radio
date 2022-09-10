@@ -33,12 +33,6 @@ class RadioHome extends StatelessWidget {
                   drawer: const AppDrawer(),
                   appBar: AppBar(
                     title: const Text(AppStrings.appTitle),
-                    actions: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: AppIcons.appBarSearchIcon,
-                      )
-                    ],
                     bottom: const TabBar(enableFeedback: false, tabs: [
                       AppIcons.tabBarHomeIcon,
                       AppIcons.tabBarFavIcon,

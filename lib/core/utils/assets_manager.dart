@@ -1,4 +1,6 @@
-abstract class ImgsManager {
+abstract class AssetsManager {
+  static const String splashScreen = 'assets/splash_json/radio_splash.json';
+
   static const String _path = "assets/images/";
 
   static const appBar = '${_path}appbar.jpg';

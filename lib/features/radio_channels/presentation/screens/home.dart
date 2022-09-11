@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/core/utils/app_strings.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
+import 'package:smart_internet_radio/features/radio_channels/presentation/screens/curve_screen.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/favorites_tab_builder.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/home_tab_builder.dart';
 import '../widgets/drawer.dart';
@@ -30,12 +31,14 @@ class RadioHome extends StatelessWidget {
               return DefaultTabController(
                 length: 2,
                 child: Scaffold(
+                  extendBodyBehindAppBar: true,
                   drawer: const AppDrawer(),
                   appBar: AppBar(
+                    flexibleSpace: const AppbarCurves(),
                     title: const Text(AppStrings.appTitle),
-                    bottom: const TabBar(enableFeedback: false, tabs: [
-                      AppIcons.tabBarHomeIcon,
-                      AppIcons.tabBarFavIcon,
+                    bottom: const TabBar(enableFeedback: false, indicatorColor: Colors.transparent, tabs: [
+                      Tab(icon: AppIcons.tabBarHomeIcon),
+                      Tab(icon: AppIcons.tabBarFavIcon),
                     ]),
                   ),
                   body: const TabBarView(children: [

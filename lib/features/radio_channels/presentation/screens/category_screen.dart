@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/entities/channel.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
+import 'package:smart_internet_radio/features/radio_channels/presentation/screens/curve_screen.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/screens/home.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/channel_widget.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/play_bar.dart';
@@ -23,6 +24,7 @@ class CategoryScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
+            flexibleSpace: const AppbarCurves(),
             leading: IconButton(
               icon: AppIcons.arrowBack,
               onPressed: () {

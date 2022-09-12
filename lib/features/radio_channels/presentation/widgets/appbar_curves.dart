@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/utils/colors/app_colors.dart';
 
 class AppbarCurves extends StatelessWidget {
@@ -13,7 +12,7 @@ class AppbarCurves extends StatelessWidget {
       clipper: AppbarClipper(),
       child: Container(
         width: double.infinity,
-        color: Colors.grey,
+        color: AppColors.primary,
       ),
     );
   }

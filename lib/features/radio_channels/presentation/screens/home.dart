@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/core/utils/app_strings.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
-import 'package:smart_internet_radio/features/radio_channels/presentation/screens/curve_screen.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/favorites_tab_builder.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/home_tab_builder.dart';
+import '../widgets/appbar_curves.dart';
 import '../widgets/drawer.dart';
 import '../widgets/play_bar.dart';
 

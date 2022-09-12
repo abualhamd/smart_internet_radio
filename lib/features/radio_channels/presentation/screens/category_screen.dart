@@ -24,7 +24,7 @@ class CategoryScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            flexibleSpace: const AppbarCurves(),
+            // TODO add curves to the appbar
             leading: IconButton(
               icon: AppIcons.arrowBack,
               onPressed: () {

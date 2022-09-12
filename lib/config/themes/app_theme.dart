@@ -6,7 +6,6 @@ final appTheme = ThemeData(
   appBarTheme: const AppBarTheme(
     centerTitle: true,
     elevation: 0,
-    backgroundColor: Colors.transparent,
   ),
   iconTheme: const IconThemeData(
     color: Colors.white,

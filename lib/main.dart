@@ -4,6 +4,8 @@ import 'package:smart_internet_radio/bloc_observer.dart';
 import 'app.dart';
 import 'injection_container.dart' as di;
 
+// todo add similarity search to alan ai
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await di.init();

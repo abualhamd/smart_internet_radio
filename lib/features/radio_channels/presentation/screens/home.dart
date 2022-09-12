@@ -35,8 +35,12 @@ class RadioHome extends StatelessWidget {
                   drawer: const AppDrawer(),
                   appBar: AppBar(
                     flexibleSpace: const AppbarCurves(),
+                    backgroundColor: Colors.transparent,
                     title: const Text(AppStrings.appTitle),
-                    bottom: const TabBar(enableFeedback: false, indicatorColor: Colors.transparent, tabs: [
+                    bottom: const TabBar(
+                      enableFeedback: false,
+                      indicatorColor: Colors.transparent,
+                      tabs: [
                       Tab(icon: AppIcons.tabBarHomeIcon),
                       Tab(icon: AppIcons.tabBarFavIcon),
                     ]),

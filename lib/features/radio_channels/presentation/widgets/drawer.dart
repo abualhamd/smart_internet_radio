@@ -21,7 +21,7 @@ class AppDrawer extends StatelessWidget {
                 decoration: BoxDecoration(color: AppColors.primary),
                 child: const Text(
                   // TODO
-                  'Categories',
+                  '', //Categories
                   style: TextStyle(color: Colors.white),
                 ),
               ),

@@ -38,6 +38,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.1
+  flutter_dotenv: ^5.0.2
   get_it: ^7.2.0
   just_audio: ^0.9.28
   lottie: ^1.4.2
@@ -69,6 +70,7 @@ flutter:
   assets:
     - assets/images/
     - assets/splash_json/
+    - .env
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

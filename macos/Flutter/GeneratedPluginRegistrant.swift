@@ -8,7 +8,7 @@ import Foundation
 import audio_session
 import just_audio
 import package_info
-import path_provider_macos
+import path_provider_foundation
 import sqflite
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {

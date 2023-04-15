@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart_internet_radio/core/usecases/use_case.dart';
 import 'package:smart_internet_radio/core/utils/app_icons.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/entities/channel.dart';
@@ -155,7 +156,7 @@ class RadioCubit extends Cubit<RadioState> {
 
   void setupAlan() {
     AlanVoice.addButton(
-        "5a1f2b34d4b1d69620e6b6972cca03b42e956eca572e1d8b807a3e2338fdd0dc/stage",
+        dotenv.env['ALAN_KEY']??'',
         buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
 
     Future<void> handleCommand(Map<String, dynamic> response) async {

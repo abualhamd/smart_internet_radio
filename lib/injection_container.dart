@@ -4,6 +4,7 @@ import 'package:smart_internet_radio/features/radio_channels/data/datasources/lo
 import 'package:smart_internet_radio/features/radio_channels/data/datasources/remote_data_source.dart';
 import 'package:smart_internet_radio/features/radio_channels/data/repositories/channel_repo_impl.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/repositories/channel_repo.dart';
+import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/control_volume.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/get_audio.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/stop_audio.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/get_categories.dart';
@@ -19,14 +20,14 @@ Future<void> init() async {
   ///cubit
   sl.registerFactory<RadioCubit>(
     () => RadioCubit(
-      storeChannelsUsecase: sl(),
-      getChannelsUsecase: sl(),
-      getAudioUsecase: sl(),
-      stopAudioUsecase: sl(),
-      toggleFavUsecase: sl(),
-      getFavsUsecase: sl(),
-      getCategoryUsecase: sl(),
-    ),
+        storeChannelsUsecase: sl(),
+        getChannelsUsecase: sl(),
+        getAudioUsecase: sl(),
+        stopAudioUsecase: sl(),
+        toggleFavUsecase: sl(),
+        getFavsUsecase: sl(),
+        getCategoryUsecase: sl(),
+        controlVolumeUsecase: sl()),
   );
 
   ///usecase
@@ -50,6 +51,9 @@ Future<void> init() async {
 
   sl.registerLazySingleton<GetCategoryUsecase>(
       () => GetCategoryUsecase(channelRepo: sl()));
+
+  sl.registerLazySingleton<ControlVolumeUsecase>(
+      () => ControlVolumeUsecase(channelRepo: sl()));
 
   ///repo
   sl.registerLazySingleton<ChannelRepo>(

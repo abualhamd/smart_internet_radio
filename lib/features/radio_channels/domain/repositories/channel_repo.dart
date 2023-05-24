@@ -12,4 +12,5 @@ abstract class ChannelRepo {
       {required int id, required String cond});
   Future<Either<Failure, NoParams>> getAudio({required String url});
   Future<Either<Failure, NoParams>> stopAudio();
+  Future<Either<Failure, NoParams>> controlVolume({required double volume});
 }

@@ -20,3 +20,10 @@ class FavParams extends Equatable {
   @override
   List<Object?> get props => [id, cond];
 }
+
+// class VolumeParams extends Equatable {
+//   const VolumeParams({required this.volume});
+//   final double volume;
+//   @override
+//   List<Object?> get props => [volume];
+// }

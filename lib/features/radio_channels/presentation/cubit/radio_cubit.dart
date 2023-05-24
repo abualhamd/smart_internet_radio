@@ -16,6 +16,8 @@ import 'package:smart_internet_radio/features/radio_channels/domain/usecases/cha
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/store_channels.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/channel/toggle_fav.dart';
 import '../../../../core/errors/failures.dart';
+import '../../domain/usecases/audio/control_volume.dart';
+import 'dart:math';
 part 'radio_states.dart';
 
 class RadioCubit extends Cubit<RadioState> {
@@ -24,6 +26,7 @@ class RadioCubit extends Cubit<RadioState> {
     required GetChannelsUsecase getChannelsUsecase,
     required GetAudioUsecase getAudioUsecase,
     required StopAudioUsecase stopAudioUsecase,
+    required ControlVolumeUsecase controlVolumeUsecase,
     required ToggleFavUsecase toggleFavUsecase,
     required GetFavsUsecase getFavsUsecase,
     required GetCategoryUsecase getCategoryUsecase,
@@ -31,6 +34,7 @@ class RadioCubit extends Cubit<RadioState> {
         _getChannelsUsecase = getChannelsUsecase,
         _getAudioUsecase = getAudioUsecase,
         _stopAudioUsecase = stopAudioUsecase,
+        _controlVolumeUsecase = controlVolumeUsecase,
         _toggleFavUsecase = toggleFavUsecase,
         _getFavsUsecase = getFavsUsecase,
         _getCategoryUsecase = getCategoryUsecase,
@@ -43,6 +47,7 @@ class RadioCubit extends Cubit<RadioState> {
   final ToggleFavUsecase _toggleFavUsecase;
   final GetFavsUsecase _getFavsUsecase;
   final GetCategoryUsecase _getCategoryUsecase;
+  final ControlVolumeUsecase _controlVolumeUsecase;
 
   List<Channel> channels = [];
   List<Channel> favs = [];
@@ -82,12 +87,22 @@ class RadioCubit extends Cubit<RadioState> {
     playbarChannel = channel;
     playPauseIcon = AppIcons.pauseIcon;
 
-    var response = await _getAudioUsecase(playbarChannel!.soundUrl);
-    response.fold((failure) {
-      emit(RadioAudioErrorState());
-    }, (success) {
+    try {
+      await _getAudioUsecase(playbarChannel!.soundUrl);
       emit(RadioAudioSuccessState());
-    });
+    } catch (e) {
+      playPauseIcon = AppIcons.playIcon;
+      emit(RadioAudioErrorState());
+    }
+
+    // var response =
+    // await _getAudioUsecase(playbarChannel!.soundUrl);
+    // response.fold((failure) {
+    // playPauseIcon = AppIcons.playIcon;
+    // emit(RadioAudioErrorState());
+    // }, (success) {
+    //   emit(RadioAudioSuccessState());
+    // });
   }
 
   Future<void> pressPlaybar() async {
@@ -103,6 +118,10 @@ class RadioCubit extends Cubit<RadioState> {
       }
       emit(RadioAudioSuccessState());
     } catch (error) {
+      if (playPauseIcon != AppIcons.playIcon) {
+        playPauseIcon = AppIcons.playIcon;
+      }
+
       emit(RadioAudioErrorState());
     }
   }
@@ -154,9 +173,23 @@ class RadioCubit extends Cubit<RadioState> {
     });
   }
 
+  Future<void> _controlVolume({required double volume}) async {
+    emit(ControlVolumeLoadingState());
+    var response = await _controlVolumeUsecase.call(volume);
+
+    response.fold((failure) => emit(ControlVolumeErrorState()),
+        (success) => emit(ControlVolumeSuccessState()));
+  }
+
+  Future<void> _playRandomFavChannel() async {
+    if (favs.isNotEmpty) {
+      final rand = Random().nextInt(favs.length);
+      await playChannel(channel: favs[rand]);
+    }
+  }
+
   void setupAlan() {
-    AlanVoice.addButton(
-        dotenv.env['ALAN_KEY']??'',
+    AlanVoice.addButton(dotenv.env['ALAN_KEY'] ?? '',
         buttonAlign: AlanVoice.BUTTON_ALIGN_RIGHT);
 
     Future<void> handleCommand(Map<String, dynamic> response) async {
@@ -182,6 +215,9 @@ class RadioCubit extends Cubit<RadioState> {
           int id = response['id'];
           await toggleFav(id: id, cond: !true);
           break;
+        case 'play_favorite':
+          await _playRandomFavChannel();
+          break;
         case 'next':
           int index = playbarChannel!.id % channels.length;
           await playChannel(channel: channels[index]);
@@ -198,6 +234,18 @@ class RadioCubit extends Cubit<RadioState> {
       emit(RadioAlanExecutedState());
     }
 
+    AlanVoice.onButtonState.add((state) async {
+      print(state.name);
+      switch (state.name) {
+        case 'LISTEN':
+          await _controlVolume(volume: 0.1);
+          break;
+        case 'CONNECTING':
+          break;
+        default:
+          await _controlVolume(volume: 1.0);
+      }
+    });
     AlanVoice.onCommand
         .add((command) async => await handleCommand(command.data));
   }

@@ -19,12 +19,16 @@ class FavWidget extends StatelessWidget {
       onLongPress: () async {
         await cubit.toggleFav(id: _favChannel.id, cond: true);
       },
+      onTap: () async {
+        await cubit.playChannel(channel: _favChannel);
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: width / 50),
         child: Card(
             shape:
                 // TODO
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(width/15)),
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(width / 15)),
             elevation: 5,
             child: Padding(
               padding: EdgeInsets.symmetric(vertical: width / 70),

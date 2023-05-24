@@ -86,4 +86,15 @@ class ChannelRepoImpl implements ChannelRepo {
       return Left(LocalDatabaseFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, NoParams>> controlVolume(
+      {required double volume}) async {
+    try {
+      await _audioPlayer.controlVolume(volume: volume);
+      return Right(NoParams());
+    } on AudioPlayerException {
+      return Left(AudioPlayerFailure());
+    }
+  }
 }

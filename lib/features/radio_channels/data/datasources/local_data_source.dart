@@ -3,11 +3,13 @@ import 'package:smart_internet_radio/core/utils/assets_manager.dart';
 import 'package:smart_internet_radio/features/radio_channels/data/models/channel_model.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../../core/utils/enums.dart';
+
 abstract class ChannelsLocalDataSource {
   Future<void> storeChannels();
   Future<List<ChannelModel>> getChannels();
   Future<List<ChannelModel>> getFavorites();
-  Future<Map<String, List<ChannelModel>>> getCategories();
+  Future<Map<Categories, List<ChannelModel>>> getCategories();
   Future<void> toggleFav({required int id, required String cond});
 }
 
@@ -59,20 +61,20 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
     return favs;
   }
 
-  var ctgryNames = [
-    AppStrings.categQuran,
-    AppStrings.categNews,
-    AppStrings.categMusic,
-    AppStrings.categSports
-  ];
+  // var ctgryNames = [
+  //   AppStrings.categQuran,
+  //   AppStrings.categNews,
+  //   AppStrings.categMusic,
+  //   AppStrings.categSports
+  // ];
 
   @override
-  Future<Map<String, List<ChannelModel>>> getCategories() async {
-    Map<String, List<ChannelModel>> categories = {};
+  Future<Map<Categories, List<ChannelModel>>> getCategories() async {
+    Map<Categories, List<ChannelModel>> categories = {};
 
-    for (var category in ctgryNames) {
+    for (final category in Categories.values) {
       List<Map<String, dynamic>> response = await _database!.rawQuery(
-          'SELECT * FROM $tableName where type = ?', [category.toLowerCase()]);
+          'SELECT * FROM $tableName where type = ?', [category.name.toLowerCase()]);
 
       List<ChannelModel> categoryChannels = [];
 

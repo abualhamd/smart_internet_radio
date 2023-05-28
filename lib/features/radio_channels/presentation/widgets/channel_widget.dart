@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_internet_radio/core/utils/app_icons.dart';
+import 'package:smart_internet_radio/core/utils/icons_manager.dart';
 import 'package:smart_internet_radio/core/utils/extensions/media_query_values.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
 import '../../domain/entities/channel.dart';
@@ -36,7 +36,11 @@ class ChannelWidget extends StatelessWidget {
       title: Text(channel.name),
       subtitle: Text(channel.type),
       trailing: IconButton(
-        icon: channel.fav ? AppIcons.favfilled : AppIcons.favhollowed,
+        icon: Visibility(
+          visible: channel.fav,
+          replacement: IconsManager.favhollowed,
+          child: IconsManager.favfilled,
+        ),
         onPressed: () async {
           await cubit.toggleFav(id: channel.id, cond: channel.fav);
         },

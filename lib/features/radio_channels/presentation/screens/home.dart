@@ -1,7 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:smart_internet_radio/core/utils/app_icons.dart';
+import 'package:smart_internet_radio/core/utils/icons_manager.dart';
 import 'package:smart_internet_radio/core/utils/app_strings.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/cubit/radio_cubit.dart';
 import 'package:smart_internet_radio/features/radio_channels/presentation/widgets/favorites_tab_builder.dart';
@@ -10,8 +10,8 @@ import '../widgets/appbar_curves.dart';
 import '../widgets/drawer.dart';
 import '../widgets/play_bar.dart';
 
-class RadioHome extends StatelessWidget {
-  const RadioHome({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +37,22 @@ class RadioHome extends StatelessWidget {
                     flexibleSpace: const AppbarCurves(),
                     backgroundColor: Colors.transparent,
                     title: const Text(AppStrings.appTitle),
-                    bottom: const TabBar(
-                      enableFeedback: false,
-                      indicatorColor: Colors.transparent,
-                      tabs: [
-                      Tab(icon: AppIcons.tabBarHomeIcon),
-                      Tab(icon: AppIcons.tabBarFavIcon),
-                    ]),
+                    bottom: PreferredSize(
+                      //todo
+                      preferredSize: Size.fromHeight(40),
+                      child: Theme(
+                        data: ThemeData(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent),
+                        child: const TabBar(
+                            enableFeedback: false,
+                            indicatorColor: Colors.transparent,
+                            tabs: [
+                              Tab(icon: IconsManager.tabBarHomeIcon),
+                              Tab(icon: IconsManager.tabBarFavIcon),
+                            ]),
+                      ),
+                    ),
                   ),
                   body: const TabBarView(children: [
                     HomeTabBuilder(),

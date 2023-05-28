@@ -2,11 +2,13 @@ import 'package:alan_voice/alan_voice.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:smart_internet_radio/core/usecases/use_case.dart';
-import 'package:smart_internet_radio/core/utils/app_icons.dart';
+import 'package:smart_internet_radio/core/utils/icons_manager.dart';
+import 'package:smart_internet_radio/core/utils/enums.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/entities/channel.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/get_audio.dart';
 import 'package:smart_internet_radio/features/radio_channels/domain/usecases/audio/stop_audio.dart';
@@ -51,9 +53,10 @@ class RadioCubit extends Cubit<RadioState> {
 
   List<Channel> channels = [];
   List<Channel> favs = [];
-  Map<String, List<Channel>> channelsCategories = {};
+  Map<Categories, List<Channel>> channelsCategories = {};
   Channel? playbarChannel;
-  Icon playPauseIcon = AppIcons.playIcon;
+  Icon playPauseIcon = IconsManager.playIcon;
+  Categories? choosenCategory;
 
   static RadioCubit get(BuildContext context) => BlocProvider.of(context);
 
@@ -85,13 +88,13 @@ class RadioCubit extends Cubit<RadioState> {
     emit(RadioChannelPressedState());
 
     playbarChannel = channel;
-    playPauseIcon = AppIcons.pauseIcon;
+    playPauseIcon = IconsManager.pauseIcon;
 
     try {
       await _getAudioUsecase(playbarChannel!.soundUrl);
       emit(RadioAudioSuccessState());
     } catch (e) {
-      playPauseIcon = AppIcons.playIcon;
+      playPauseIcon = IconsManager.playIcon;
       emit(RadioAudioErrorState());
     }
 
@@ -109,17 +112,17 @@ class RadioCubit extends Cubit<RadioState> {
     emit(RadioPlayBarPressedState());
 
     try {
-      if (playPauseIcon == AppIcons.playIcon) {
-        playPauseIcon = AppIcons.pauseIcon;
+      if (playPauseIcon == IconsManager.playIcon) {
+        playPauseIcon = IconsManager.pauseIcon;
         await _getAudioUsecase(playbarChannel!.soundUrl);
       } else {
-        playPauseIcon = AppIcons.playIcon;
+        playPauseIcon = IconsManager.playIcon;
         await _stopAudioUsecase(NoParams());
       }
       emit(RadioAudioSuccessState());
     } catch (error) {
-      if (playPauseIcon != AppIcons.playIcon) {
-        playPauseIcon = AppIcons.playIcon;
+      if (playPauseIcon != IconsManager.playIcon) {
+        playPauseIcon = IconsManager.playIcon;
       }
 
       emit(RadioAudioErrorState());
@@ -201,7 +204,7 @@ class RadioCubit extends Cubit<RadioState> {
           break;
         case 'pause':
           await _stopAudioUsecase(NoParams());
-          playPauseIcon = AppIcons.playIcon;
+          playPauseIcon = IconsManager.playIcon;
           break;
         case 'play_channel':
           int index = response['id'] - 1;
@@ -235,7 +238,9 @@ class RadioCubit extends Cubit<RadioState> {
     }
 
     AlanVoice.onButtonState.add((state) async {
-      print(state.name);
+      if (kDebugMode) {
+        print(state.name);
+      }
       switch (state.name) {
         case 'LISTEN':
           await _controlVolume(volume: 0.1);
@@ -248,5 +253,11 @@ class RadioCubit extends Cubit<RadioState> {
     });
     AlanVoice.onCommand
         .add((command) async => await handleCommand(command.data));
+  }
+
+  void changeChoosenCategory({required Categories category}) {
+    choosenCategory = category;
+
+    emit(ChoosenCategoryChangedState());
   }
 }

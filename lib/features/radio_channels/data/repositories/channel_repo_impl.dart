@@ -1,5 +1,6 @@
 import 'package:smart_internet_radio/core/errors/exceptions.dart';
 import 'package:smart_internet_radio/core/usecases/use_case.dart';
+import 'package:smart_internet_radio/core/utils/enums.dart';
 import 'package:smart_internet_radio/features/radio_channels/data/datasources/remote_data_source.dart';
 import 'package:smart_internet_radio/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
@@ -79,7 +80,7 @@ class ChannelRepoImpl implements ChannelRepo {
   }
 
   @override
-  Future<Either<Failure, Map<String, List<Channel>>>> getCategories() async {
+  Future<Either<Failure, Map<Categories, List<Channel>>>> getCategories() async {
     try {
       return Right(await _localDataSource.getCategories());
     } on LocalDatabaseException {

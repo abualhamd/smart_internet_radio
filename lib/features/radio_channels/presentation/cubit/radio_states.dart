@@ -43,3 +43,5 @@ class RadioAlanExecutedState extends RadioState {}
 class ControlVolumeLoadingState extends RadioState {}
 class ControlVolumeSuccessState extends RadioState {}
 class ControlVolumeErrorState extends RadioState {}
+
+class ChoosenCategoryChangedState extends RadioState {}

@@ -23,17 +23,18 @@ class PlayBar extends StatelessWidget {
             await cubit.pressPlaybar();
           },
           child: Container(
-            color: AppColors.primary,
+            color: ColorsManager.primary,
             child: ListTile(
               leading: Container(
                 width: width / 6,
                 height: width / 6,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(width / 30),
-                    image: DecorationImage(
-                      image: AssetImage(cubit.playbarChannel!.img),
-                      fit: BoxFit.fill,
-                    )),
+                  borderRadius: BorderRadius.circular(width / 30),
+                  image: DecorationImage(
+                    image: AssetImage(cubit.playbarChannel!.img),
+                    fit: BoxFit.fill,
+                  ),
+                ),
               ), //Image.asset(cubit.playbarChannel!.img),
               title: Text(
                 cubit.playbarChannel!.name,
@@ -46,6 +47,7 @@ class PlayBar extends StatelessWidget {
               ),
               trailing: IconButton(
                 icon: cubit.playPauseIcon,
+                color: ColorsManager.white,
                 onPressed: () async {
                   await cubit.pressPlaybar();
                 },

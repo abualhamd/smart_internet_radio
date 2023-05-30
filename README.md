@@ -23,5 +23,6 @@ This is your typical radio app but with voice commands like the following:
 - [x] add screen utils
 - [ ] add slidable to the favorite widget so the user can remove said channel from favorites
 - [ ] add an info screen for how to use the app
+- [ ] add a search screen
 - [ ] add a tour guide when onboarding
 - [ ] add curves to the appbar of the category screen

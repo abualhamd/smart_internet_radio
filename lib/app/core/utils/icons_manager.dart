@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'colors/app_colors.dart';
@@ -37,5 +38,5 @@ abstract class IconsManager {
   ); //Icon(Icons.sports_soccer_outlined);
 
   static const arrowBack = Icon(Icons.arrow_back_ios);
-  static const aboutIcon = Icon(Icons.info_outlined);
+  static final aboutIcon = Icon(Icons.info_outlined, size: 30.sp,);
 }

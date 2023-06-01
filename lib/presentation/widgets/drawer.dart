@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../app/config/routes_manager.dart';
 import '../../../../app/core/utils/app_strings.dart';
 import '../../../../app/core/utils/colors/app_colors.dart';
@@ -31,11 +32,15 @@ class AppDrawer extends StatelessWidget {
                       .map((category) => CategoryWidget(category: category)),
                 ],
               ),
-              ListTile(
-                leading: IconsManager.aboutIcon,
-                title: const Text(AppStrings.about),
-                onTap: () => Navigator.pushReplacementNamed(context, Routes.aboutRoute),
-              )
+              Padding(
+                padding: EdgeInsetsDirectional.only(bottom: 10.h),
+                child: ListTile(
+                  leading: IconsManager.aboutIcon,
+                  titleAlignment: ListTileTitleAlignment.center,
+                  title: const Text(AppStrings.about),
+                  onTap: () => Navigator.pushReplacementNamed(context, Routes.aboutRoute),
+                ),
+              ),
             ],
           ),
         );

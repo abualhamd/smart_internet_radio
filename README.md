@@ -21,8 +21,11 @@ This is your typical radio app but with voice commands like the following:
 - [x] handled no internet case when channels are pressed
 - [x] user can play favorite channels now 
 - [x] add screen utils
+- [ ] add border to the current playing channel
+- [ ] handle the play favorite voice command
 - [ ] add slidable to the favorite widget so the user can remove said channel from favorites
-- [ ] add an info screen for how to use the app
+- [x] add an info screen for how to use the app
 - [ ] add a search screen
 - [ ] add a tour guide when onboarding
 - [ ] add curves to the appbar of the category screen
+- [ ] fix the app logo in the suspended state

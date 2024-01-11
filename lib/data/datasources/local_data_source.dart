@@ -1,8 +1,8 @@
-import 'package:smart_internet_radio/data/models/channel_model.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../../app/core/utils/assets_manager.dart';
 import '../../app/core/utils/enums.dart';
+import '../models/channel_model.dart';
 
 abstract class ChannelsLocalDataSource {
   Future<void> storeChannels();
@@ -13,7 +13,7 @@ abstract class ChannelsLocalDataSource {
 }
 
 class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
-  Database? _database;
+  late Database _database;
 
   static const String tableName = 'channels';
 
@@ -40,7 +40,7 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
   @override
   Future<List<ChannelModel>> getChannels() async {
     List<Map<String, dynamic>> channels =
-        await _database!.rawQuery('SELECT * FROM $tableName');
+        await _database.rawQuery('SELECT * FROM $tableName');
 
     return channels
         .map((channel) => ChannelModel.fromJson(json: channel))
@@ -49,7 +49,7 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
 
   @override
   Future<List<ChannelModel>> getFavorites() async {
-    var response = await _database!
+    var response = await _database
         .rawQuery('SELECT * FROM $tableName WHERE fav = ?', [true.toString()]);
 
     List<ChannelModel> favs = [];
@@ -72,8 +72,9 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
     Map<Categories, List<ChannelModel>> categories = {};
 
     for (final category in Categories.values) {
-      List<Map<String, dynamic>> response = await _database!.rawQuery(
-          'SELECT * FROM $tableName where type = ?', [category.name.toLowerCase()]);
+      List<Map<String, dynamic>> response = await _database.rawQuery(
+          'SELECT * FROM $tableName where type = ?',
+          [category.name.toLowerCase()]);
 
       List<ChannelModel> categoryChannels = [];
 
@@ -88,7 +89,7 @@ class ChannelsLocalDataSourceImpl implements ChannelsLocalDataSource {
 
   @override
   Future<void> toggleFav({required int id, required String cond}) async {
-    await _database!
+    await _database
         .rawUpdate('UPDATE $tableName SET fav = ? WHERE id = ?', [cond, id]);
   }
 }
@@ -148,7 +149,7 @@ final jsonChannels = [
     'type': 'music',
     'img': AssetsManager.banha,
     'soundUrl': 'https://whsh4u-panel.com/proxy/wzwpdthd?mp=/stream',
-    'fav': false,
+    'fav': false, // todo
   },
   {
     'id': 8,

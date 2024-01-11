@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:alan_voice/alan_voice.dart';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -6,20 +8,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:smart_internet_radio/domain/entities/channel.dart';
-import 'package:smart_internet_radio/domain/usecases/audio/get_audio.dart';
-import 'package:smart_internet_radio/domain/usecases/audio/stop_audio.dart';
-import 'package:smart_internet_radio/domain/usecases/channel/get_categories.dart';
-import 'package:smart_internet_radio/domain/usecases/channel/get_channels.dart';
-import 'package:smart_internet_radio/domain/usecases/channel/get_favs.dart';
-import 'package:smart_internet_radio/domain/usecases/channel/store_channels.dart';
-import 'package:smart_internet_radio/domain/usecases/channel/toggle_fav.dart';
+
 import '../../../../app/core/errors/failures.dart';
 import '../../../../app/core/usecases/use_case.dart';
 import '../../../../app/core/utils/enums.dart';
 import '../../../../app/core/utils/icons_manager.dart';
 import '../../../../domain/usecases/audio/control_volume.dart';
-import 'dart:math';
+import '../../domain/entities/channel.dart';
+import '../../domain/usecases/audio/get_audio.dart';
+import '../../domain/usecases/audio/stop_audio.dart';
+import '../../domain/usecases/channel/get_categories.dart';
+import '../../domain/usecases/channel/get_channels.dart';
+import '../../domain/usecases/channel/get_favs.dart';
+import '../../domain/usecases/channel/store_channels.dart';
+import '../../domain/usecases/channel/toggle_fav.dart';
+
 part 'radio_states.dart';
 
 class RadioCubit extends Cubit<RadioState> {
@@ -31,7 +34,7 @@ class RadioCubit extends Cubit<RadioState> {
     required ControlVolumeUsecase controlVolumeUsecase,
     required ToggleFavUsecase toggleFavUsecase,
     required GetFavsUsecase getFavsUsecase,
-    required GetCategoryUsecase getCategoryUsecase,
+    required GetCategoriesUsecase getCategoryUsecase,
   })  : _storeChannelsUsecase = storeChannelsUsecase,
         _getChannelsUsecase = getChannelsUsecase,
         _getAudioUsecase = getAudioUsecase,
@@ -48,7 +51,7 @@ class RadioCubit extends Cubit<RadioState> {
   final StopAudioUsecase _stopAudioUsecase;
   final ToggleFavUsecase _toggleFavUsecase;
   final GetFavsUsecase _getFavsUsecase;
-  final GetCategoryUsecase _getCategoryUsecase;
+  final GetCategoriesUsecase _getCategoryUsecase;
   final ControlVolumeUsecase _controlVolumeUsecase;
 
   List<Channel> channels = [];

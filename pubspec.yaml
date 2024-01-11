@@ -53,6 +53,9 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  mockito: ^5.4.4
+  mocktail: ^1.0.2
+  sqflite_common_ffi: ^2.3.1
 
 flutter_launcher_icons:
   android: true
@@ -74,7 +77,7 @@ flutter:
   assets:
     - assets/images/
     - assets/splash_json/
-    - .env
+    # - .env
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

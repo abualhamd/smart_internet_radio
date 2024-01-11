@@ -12,6 +12,7 @@ import 'package:smart_internet_radio/domain/usecases/channel/get_channels.dart';
 import 'package:smart_internet_radio/domain/usecases/channel/get_favs.dart';
 import 'package:smart_internet_radio/domain/usecases/channel/store_channels.dart';
 import 'package:smart_internet_radio/domain/usecases/channel/toggle_fav.dart';
+
 import '../presentation/cubit/radio_cubit.dart';
 
 final sl = di.GetIt.instance;
@@ -49,8 +50,8 @@ Future<void> init() async {
   sl.registerLazySingleton<GetFavsUsecase>(
       () => GetFavsUsecase(channelRepo: sl()));
 
-  sl.registerLazySingleton<GetCategoryUsecase>(
-      () => GetCategoryUsecase(channelRepo: sl()));
+  sl.registerLazySingleton<GetCategoriesUsecase>(
+      () => GetCategoriesUsecase(channelRepo: sl()));
 
   sl.registerLazySingleton<ControlVolumeUsecase>(
       () => ControlVolumeUsecase(channelRepo: sl()));

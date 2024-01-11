@@ -11,7 +11,7 @@ class Channel extends Equatable {
   final String soundUrl;
   bool fav;
 
-   Channel({
+  Channel({
     required this.id,
     required this.name,
     required this.type,

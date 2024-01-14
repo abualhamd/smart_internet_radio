@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+
 import 'package:smart_internet_radio/app/core/errors/exceptions.dart';
 import 'package:smart_internet_radio/app/core/errors/failures.dart';
 import 'package:smart_internet_radio/app/core/usecases/use_case.dart';
+import 'package:smart_internet_radio/app/core/utils/enums.dart';
 import 'package:smart_internet_radio/data/datasources/local_data_source.dart';
 import 'package:smart_internet_radio/data/datasources/remote_data_source.dart';
 import 'package:smart_internet_radio/data/models/channel_model.dart';
@@ -43,12 +45,18 @@ void main() {
     ),
   ];
 
+  final categoriesFromLocalDataSource = {
+    Categories.quran: channelsFromLocalDataSource,
+  };
+
   group("testing getChannels", () {
     test("testing getChannels => should return channels", () async {
+      final futureFromLocalDataSource =
+          Future.value(channelsFromLocalDataSource);
       // arrange
       when(
         () => localDataSource.getChannels(),
-      ).thenAnswer((_) async => channelsFromLocalDataSource);
+      ).thenAnswer((_) => futureFromLocalDataSource);
       // act
       final result = await stu.getChannels();
       // assert
@@ -73,6 +81,20 @@ void main() {
     });
   });
 
+  group("testing categories", () {
+    test("should return ", () async{
+      // arrange
+      when(() => localDataSource.getCategories())
+          .thenAnswer((invocation) async=> categoriesFromLocalDataSource);
+
+      // act
+      final result = await stu.getCategories();
+
+      // assert
+      expect(result, equals(Right(categoriesFromLocalDataSource)));
+      verify(()=> localDataSource.getCategories()).called(equals(1));
+    });
+  });
   group("testing toggleFav", () {
     const tId = 0;
     const tCond = "";

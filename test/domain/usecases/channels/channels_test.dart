@@ -13,13 +13,14 @@ import 'package:smart_internet_radio/domain/usecases/channel/get_channels.dart';
 
 class MockChannelRepo extends Mock implements ChannelRepo {}
 
-void main() {
+void main(){
   final channels = [
     ChannelModel.fromJson(json: jsonChannels[0]),
     ChannelModel.fromJson(json: jsonChannels[1]),
   ];
+  
 
-  group("testing GetChannelsUsecase", () {
+    group("testing GetChannelsUsecase", () {
     final mockChannelRepo = MockChannelRepo();
     late GetChannelsUsecase stu;
 
@@ -49,7 +50,7 @@ void main() {
     });
   });
 
-  group("testing", () {
+    group("testing GetCategoriesUsecase", () {
     final mockChannelRepo = MockChannelRepo();
     late GetCategoriesUsecase stu;
 
@@ -57,7 +58,8 @@ void main() {
       stu = GetCategoriesUsecase(channelRepo: mockChannelRepo);
     });
 
-    test("Testing GetCategoriesUsecase should return a list of categories", () async {
+    test("Testing GetCategoriesUsecase should return a list of categories",
+        () async {
       final map = {
         Categories.quran: channels,
       };
@@ -88,4 +90,5 @@ void main() {
       // logInvocations([mockChannelRepo]);
     });
   });
+
 }

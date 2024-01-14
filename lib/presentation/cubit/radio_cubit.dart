@@ -94,7 +94,7 @@ class RadioCubit extends Cubit<RadioState> {
     playPauseIcon = IconsManager.pauseIcon;
 
     try {
-      await _getAudioUsecase(playbarChannel!.soundUrl);
+      await _getAudioUsecase.call(playbarChannel!.soundUrl);
       emit(RadioAudioSuccessState());
     } catch (e) {
       playPauseIcon = IconsManager.playIcon;
